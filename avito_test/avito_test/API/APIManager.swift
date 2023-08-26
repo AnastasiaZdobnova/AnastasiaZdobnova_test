@@ -1,47 +1,32 @@
-//
-//  APIManager.swift
-//  avito_test
-//
-//  Created by Анастасия Здобнова on 26.08.2023.
-//
-
 import Foundation
+
+enum APIResult<T> {
+    case success(T)
+    case failure(Error)
+}
+
 class APIManager {
-    func fetchData<T: Decodable>(url: URL, controller: ViewController, responseType: T.Type) {
+    func fetchData<T: Decodable>(url: URL, completion: @escaping (APIResult<T>) -> Void) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
-                controller.label.text = ("Error: \(error)")
-                print("Error: \(error)")
+                completion(.failure(error))
                 return
             }
             
             guard let data = data else {
-                controller.label.text = ("No data received")
+                let noDataError = NSError(domain: "com.example.avito_test", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data received"])
+                completion(.failure(noDataError))
                 return
             }
             
             do {
                 let decoder = JSONDecoder()
-                let decodedData = try decoder.decode(responseType, from: data)
-                
-                // Обработайте полученные данные, например, отобразите их на экране
-                if let productData = decodedData as? T {
-                    print(productData)
-                }
-                
-                controller.label.text = "загрузилось"
+                let decodedData = try decoder.decode(T.self, from: data)
+                completion(.success(decodedData))
             } catch {
-                print("Error: \(error)")
-                controller.label.text = ("Error decoding JSON: \(error)")
-                
+                completion(.failure(error))
             }
         }.resume()
     }
 }
-
-
-
-
-
-
 

@@ -8,7 +8,8 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
+    let apiManager = APIManager()
+    var productData: ProductData?
     let label = UILabel()
     
     override func viewDidLoad() {
@@ -31,9 +32,19 @@ class ViewController: UIViewController {
         guard let url = URL(string: "https://www.avito.st/s/interns-ios/main-page.json") else {
             return
         }
-        let apiManager = APIManager()
-        apiManager.fetchData(url: url, controller: self, responseType: ProductData.self)
+        
+        apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let productData):
+                    self.productData = productData
+                    self.label.text = "загрузилось"
+                    print(productData)
+                case .failure(let error):
+                    self.label.text = ("Error: \(error)")
+                }
+            }
+        }
     }
-    
 }
 
