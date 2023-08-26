@@ -10,12 +10,11 @@ import UIKit
 class ViewController: UIViewController {
     
     let label = UILabel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .green
-        
-        label.text = "Привет, мир!"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 24)
@@ -33,7 +32,7 @@ class ViewController: UIViewController {
             return
         }
         let apiManager = APIManager()
-            apiManager.fetchData(url: url, controller: self)
+        apiManager.fetchData(url: url, controller: self, responseType: ProductData.self)
     }
     
 }

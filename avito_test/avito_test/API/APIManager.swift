@@ -7,10 +7,11 @@
 
 import Foundation
 class APIManager {
-    func fetchData (url: URL, controller: ViewController) {
+    func fetchData<T: Decodable>(url: URL, controller: ViewController, responseType: T.Type) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 controller.label.text = ("Error: \(error)")
+                print("Error: \(error)")
                 return
             }
             
@@ -21,14 +22,26 @@ class APIManager {
             
             do {
                 let decoder = JSONDecoder()
-                let productData = try decoder.decode(ProductData.self, from: data)
+                let decodedData = try decoder.decode(responseType, from: data)
                 
                 // Обработайте полученные данные, например, отобразите их на экране
-                print(productData.advertisements)
+                if let productData = decodedData as? T {
+                    print(productData)
+                }
+                
                 controller.label.text = "загрузилось"
             } catch {
+                print("Error: \(error)")
                 controller.label.text = ("Error decoding JSON: \(error)")
+                
             }
         }.resume()
     }
 }
+
+
+
+
+
+
+
