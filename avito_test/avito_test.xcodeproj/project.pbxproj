@@ -12,6 +12,7 @@
 		5401CB502A98A56C002D4A3A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5401CB4F2A98A56C002D4A3A /* ViewController.swift */; };
 		5401CB552A98A56F002D4A3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5401CB542A98A56F002D4A3A /* Assets.xcassets */; };
 		5401CB582A98A56F002D4A3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5401CB562A98A56F002D4A3A /* LaunchScreen.storyboard */; };
+		54811AD22A99D77C00E8CE63 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54811AD12A99D77C00E8CE63 /* NavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		5401CB542A98A56F002D4A3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5401CB572A98A56F002D4A3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5401CB592A98A56F002D4A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54811AD12A99D77C00E8CE63 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				5401CB4B2A98A56C002D4A3A /* AppDelegate.swift */,
+				54811AD12A99D77C00E8CE63 /* NavigationController.swift */,
 				5401CB4D2A98A56C002D4A3A /* SceneDelegate.swift */,
 				5401CB4F2A98A56C002D4A3A /* ViewController.swift */,
 				5401CB542A98A56F002D4A3A /* Assets.xcassets */,
@@ -80,6 +83,8 @@
 			dependencies = (
 			);
 			name = avito_test;
+			packageProductDependencies = (
+			);
 			productName = avito_test;
 			productReference = 5401CB482A98A56C002D4A3A /* avito_test.app */;
 			productType = "com.apple.product-type.application";
@@ -108,6 +113,8 @@
 				Base,
 			);
 			mainGroup = 5401CB3F2A98A56C002D4A3A;
+			packageReferences = (
+			);
 			productRefGroup = 5401CB492A98A56C002D4A3A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -135,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5401CB502A98A56C002D4A3A /* ViewController.swift in Sources */,
+				54811AD22A99D77C00E8CE63 /* NavigationController.swift in Sources */,
 				5401CB4C2A98A56C002D4A3A /* AppDelegate.swift in Sources */,
 				5401CB4E2A98A56C002D4A3A /* SceneDelegate.swift in Sources */,
 			);
@@ -206,7 +214,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -263,7 +271,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -287,7 +295,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,7 +323,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
