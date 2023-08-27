@@ -1,53 +1,10 @@
-////
-////  ViewController.swift
-////  avito_test
-////
-////  Created by Анастасия Здобнова on 25.08.2023.
-////
 //
-//import UIKit
+//  ViewController.swift
+//  avito_test
 //
-//class ViewController: UIViewController {
-//    let apiManager = APIManager()
-//    var productData: ProductData?
-//    let label = UILabel()
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Do any additional setup after loading the view.
-//        view.backgroundColor = .green
-//        label.textAlignment = .center
-//        label.textColor = .white
-//        label.font = UIFont.boldSystemFont(ofSize: 24)
-//        
-//        // Устанавливаем позицию и размер UILabel
-//        label.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: 50)
-//        // Добавляем UILabel на экран
-//        view.addSubview(label)
-//        fetchProductData()
-//    }
-//    
-//    func fetchProductData() {
-//        label.text = "loading"
-//        guard let url = URL(string: "https://www.avito.st/s/interns-ios/main-page.json") else {
-//            return
-//        }
-//        
-//        apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let productData):
-//                    self.productData = productData
-//                    self.label.text = "загрузилось"
-//                    print(productData)
-//                case .failure(let error):
-//                    self.label.text = ("Error: \(error)")
-//                }
-//            }
-//        }
-//    }
-//}
+//  Created by Анастасия Здобнова on 25.08.2023.
 //
+
 
 import UIKit
 
@@ -78,7 +35,7 @@ class ViewController: UIViewController {
     
     private func setupUI() {
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: 50)
         view.addSubview(label)
@@ -114,23 +71,27 @@ class ViewController: UIViewController {
     }
     
     func fetchProductData() {
+        state = .loading
         label.text = "loading"
+        
         guard let url = URL(string: "https://www.avito.st/s/interns-ios/main-page.json") else {
             return
         }
-        
-        apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let productData):
-                    self.productData = productData
-                    self.state = .success
-                    print(productData)
-                case .failure(let error):
-                    self.state = .error(error)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
+                self.apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let productData):
+                            self.productData = productData
+                            self.state = .success
+                            print(productData)
+                        case .failure(let error):
+                            self.state = .error(error)
+                        }
+                    }
                 }
             }
-        }
+
     }
 }
 
