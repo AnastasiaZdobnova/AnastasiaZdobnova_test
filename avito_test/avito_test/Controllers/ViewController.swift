@@ -20,10 +20,16 @@ class ViewController: UIViewController {
     let label = UILabel()
     var collectionView: UICollectionView!
     
+    
     var state: ViewState = .loading {
         didSet {
             updateUI()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
     override func viewDidLoad() {
@@ -34,6 +40,8 @@ class ViewController: UIViewController {
     }
     
     private func setupUI() {
+        
+        
         label.textAlignment = .center
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 24)
@@ -41,12 +49,20 @@ class ViewController: UIViewController {
         view.addSubview(label)
         
         let layout = UICollectionViewFlowLayout()
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: 150, width: view.frame.width, height: view.frame.height - 150), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(ProductCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.backgroundColor = .white
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
     private func updateUI() {
@@ -101,22 +117,17 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .gray
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ProductCell
         
-        // Display title in cell
-        if let title = productData?.advertisements[indexPath.item].title {
-            let titleLabel = UILabel(frame: cell.contentView.bounds)
-            titleLabel.text = title
-            titleLabel.textAlignment = .center
-            titleLabel.textColor = .black
-            cell.contentView.addSubview(titleLabel)
+        // Configure the cell using the data from productData
+        if let product = productData?.advertisements[indexPath.item] {
+            cell.setupSell(title: product.title, image: product.imageURL)
         }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2 - 10, height: 50)
+        return CGSize(width: collectionView.frame.width / 2 - 10, height: 300)
     }
 }
