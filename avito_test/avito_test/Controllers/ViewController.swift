@@ -108,6 +108,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productData?.advertisements.count ?? 0
     }
@@ -125,5 +126,17 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width / 2 - 5, height: 300)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let product = productData?.advertisements[indexPath.item] {
+            print("Selected cell at id: \(product.id)")
+            let secondViewController = SecondViewController() // Создание экземпляра второго контроллера
+            secondViewController.id = product.id
+                navigationController?.pushViewController(secondViewController, animated: true) // Переход на второй контроллер
+            
+        }
+        
     }
 }
