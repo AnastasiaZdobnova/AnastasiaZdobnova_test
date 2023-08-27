@@ -14,8 +14,11 @@
 		5401CB582A98A56F002D4A3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5401CB562A98A56F002D4A3A /* LaunchScreen.storyboard */; };
 		5411FC8A2A99F24B0006D0D2 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5411FC892A99F24B0006D0D2 /* APIManager.swift */; };
 		5411FC8C2A9A00F70006D0D2 /* DetailedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5411FC8B2A9A00F70006D0D2 /* DetailedData.swift */; };
+		5411FC912A9A139A0006D0D2 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5411FC902A9A139A0006D0D2 /* ProductCell.swift */; };
 		54811AD22A99D77C00E8CE63 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54811AD12A99D77C00E8CE63 /* NavigationController.swift */; };
 		54811AD42A99E29700E8CE63 /* ProductData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54811AD32A99E29700E8CE63 /* ProductData.swift */; };
+		54C46DCC2A9B31E900BF8B28 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 54C46DCB2A9B31E900BF8B28 /* SDWebImage */; };
+		54C46DCE2A9B31E900BF8B28 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 54C46DCD2A9B31E900BF8B28 /* SDWebImageMapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,7 @@
 		5401CB592A98A56F002D4A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5411FC892A99F24B0006D0D2 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		5411FC8B2A9A00F70006D0D2 /* DetailedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedData.swift; sourceTree = "<group>"; };
+		5411FC902A9A139A0006D0D2 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		54811AD12A99D77C00E8CE63 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		54811AD32A99E29700E8CE63 /* ProductData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -37,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54C46DCE2A9B31E900BF8B28 /* SDWebImageMapKit in Frameworks */,
+				54C46DCC2A9B31E900BF8B28 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +68,7 @@
 		5401CB4A2A98A56C002D4A3A /* avito_test */ = {
 			isa = PBXGroup;
 			children = (
+				5411FC922A9A13E00006D0D2 /* View */,
 				5411FC8F2A9A01130006D0D2 /* Controllers */,
 				5411FC8E2A9A010A0006D0D2 /* API */,
 				5411FC8D2A9A00FE0006D0D2 /* Data */,
@@ -100,6 +107,14 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		5411FC922A9A13E00006D0D2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5411FC902A9A139A0006D0D2 /* ProductCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -117,6 +132,8 @@
 			);
 			name = avito_test;
 			packageProductDependencies = (
+				54C46DCB2A9B31E900BF8B28 /* SDWebImage */,
+				54C46DCD2A9B31E900BF8B28 /* SDWebImageMapKit */,
 			);
 			productName = avito_test;
 			productReference = 5401CB482A98A56C002D4A3A /* avito_test.app */;
@@ -147,6 +164,7 @@
 			);
 			mainGroup = 5401CB3F2A98A56C002D4A3A;
 			packageReferences = (
+				54C46DCA2A9B31E900BF8B28 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 5401CB492A98A56C002D4A3A /* Products */;
 			projectDirPath = "";
@@ -179,6 +197,7 @@
 				54811AD42A99E29700E8CE63 /* ProductData.swift in Sources */,
 				54811AD22A99D77C00E8CE63 /* NavigationController.swift in Sources */,
 				5411FC8C2A9A00F70006D0D2 /* DetailedData.swift in Sources */,
+				5411FC912A9A139A0006D0D2 /* ProductCell.swift in Sources */,
 				5401CB4C2A98A56C002D4A3A /* AppDelegate.swift in Sources */,
 				5401CB4E2A98A56C002D4A3A /* SceneDelegate.swift in Sources */,
 			);
@@ -395,6 +414,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		54C46DCA2A9B31E900BF8B28 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		54C46DCB2A9B31E900BF8B28 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54C46DCA2A9B31E900BF8B28 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		54C46DCD2A9B31E900BF8B28 /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54C46DCA2A9B31E900BF8B28 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5401CB402A98A56C002D4A3A /* Project object */;
 }
