@@ -12,7 +12,7 @@ class ProductCell: UICollectionViewCell {
     
     let contentWhiteView: UIView = {
         let view = UIView()
-        view.backgroundColor = .brown
+        view.backgroundColor = .white
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,7 +31,35 @@ class ProductCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    let priceLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let locationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,7 +70,9 @@ class ProductCell: UICollectionViewCell {
         addSubview(contentWhiteView)
         contentWhiteView.addSubview(imageView)
         contentWhiteView.addSubview(titleLabel)
-        
+        contentWhiteView.addSubview(priceLabel)
+        contentWhiteView.addSubview(locationLabel)
+        contentWhiteView.addSubview(dateLabel)
         
         NSLayoutConstraint.activate([
             
@@ -57,18 +87,29 @@ class ProductCell: UICollectionViewCell {
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
             
             
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor)
-            //titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            //titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: 130),
+            
+            priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            
+            locationLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+            locationLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
+            
+            dateLabel.leadingAnchor.constraint(equalTo: locationLabel.leadingAnchor),
+            dateLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 4)
         ])
     }
     
-    func setupSell(title: String, image: String){
+    func setupSell(title: String, image: String, price: String, location: String, date: String){
         titleLabel.text = title
         if let imageURL = URL(string: image) {
             imageView.sd_setImage(with: imageURL, completed: nil)
         }
+        priceLabel.text = price
+        locationLabel.text = location
+        dateLabel.text = date
     }
     
     required init?(coder: NSCoder) {

@@ -5,7 +5,6 @@
 //  Created by Анастасия Здобнова on 25.08.2023.
 //
 
-
 import UIKit
 
 enum ViewState {
@@ -20,7 +19,6 @@ class ViewController: UIViewController {
     let label = UILabel()
     var collectionView: UICollectionView!
     
-    
     var state: ViewState = .loading {
         didSet {
             updateUI()
@@ -34,14 +32,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .green
+        view.backgroundColor = .white
         setupUI()
         fetchProductData()
     }
     
     private func setupUI() {
-        
-        
+
         label.textAlignment = .center
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 24)
@@ -94,20 +91,19 @@ class ViewController: UIViewController {
             return
         }
         DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
-                self.apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let productData):
-                            self.productData = productData
-                            self.state = .success
-                            print(productData)
-                        case .failure(let error):
-                            self.state = .error(error)
-                        }
+            self.apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let productData):
+                        self.productData = productData
+                        self.state = .success
+                        print(productData)
+                    case .failure(let error):
+                        self.state = .error(error)
                     }
                 }
             }
-
+        }
     }
 }
 
@@ -121,13 +117,13 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
         
         // Configure the cell using the data from productData
         if let product = productData?.advertisements[indexPath.item] {
-            cell.setupSell(title: product.title, image: product.imageURL)
+            cell.setupSell(title: product.title, image: product.imageURL, price: product.price, location: product.location, date: product.createdDate)
         }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2 - 10, height: 300)
+        return CGSize(width: collectionView.frame.width / 2 - 5, height: 300)
     }
 }
