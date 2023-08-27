@@ -90,7 +90,7 @@ class ViewController: UIViewController {
         guard let url = URL(string: "https://www.avito.st/s/interns-ios/main-page.json") else {
             return
         }
-        DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
             self.apiManager.fetchData(url: url) { (result: APIResult<ProductData>) in
                 DispatchQueue.main.async {
                     switch result {
