@@ -35,12 +35,6 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         setupUI()
         fetchProductData()
-//        let phoneNumber =  "+7 (747) 277-6804"
-//        let cleanedPhoneNumber = phoneNumber.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-//        
-//        if let url = URL(string: "tel://+\(cleanedPhoneNumber)") {
-//            UIApplication.shared.open(url)
-//        }
     }
     
     private func setupUI() {
@@ -58,6 +52,7 @@ class ViewController: UIViewController {
         collectionView.register(ProductCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([

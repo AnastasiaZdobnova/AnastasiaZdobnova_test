@@ -10,6 +10,7 @@ import SDWebImage
 
 class DetailedProductView: UIView {
     
+    var controller = UIViewController()
     var email = ""
     var number = ""
     
@@ -17,6 +18,7 @@ class DetailedProductView: UIView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.bounces = true
+        scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
     
@@ -32,7 +34,6 @@ class DetailedProductView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 5
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -57,7 +58,6 @@ class DetailedProductView: UIView {
     let telephoneButton: UIButton = {
         let button = UIButton()
         button.setTitle("Позвонить", for: .normal)
-        button.addTarget(self, action: #selector(telephoneButtonTapped), for: .touchUpInside)
         button.backgroundColor = UIColor(
             red: CGFloat(0x39) / 255.0,
             green: CGFloat(0xC7) / 255.0,
@@ -73,7 +73,6 @@ class DetailedProductView: UIView {
     let emailButton: UIButton = {
         let button = UIButton()
         button.setTitle("Написать", for: .normal)
-        button.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
         button.backgroundColor = UIColor(
             red: CGFloat(0x17) / 255.0,
             green: CGFloat(0x8F) / 255.0,
@@ -120,6 +119,24 @@ class DetailedProductView: UIView {
         label.numberOfLines = 0
         return label
     }()
+    
+    let idlabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -135,6 +152,8 @@ class DetailedProductView: UIView {
         contentWhiteView.addSubview(addressLabel)
         contentWhiteView.addSubview(descriptionLabelName)
         contentWhiteView.addSubview(descriptionLabel)
+        contentWhiteView.addSubview(idlabel)
+        contentWhiteView.addSubview(dateLabel)
         
         NSLayoutConstraint.activate([
             
@@ -155,7 +174,7 @@ class DetailedProductView: UIView {
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
             priceLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 15),
-            priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
+            priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 15),
             
             titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 5),
             titleLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
@@ -177,16 +196,26 @@ class DetailedProductView: UIView {
             addressLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor),
             
             descriptionLabelName.leadingAnchor.constraint(equalTo: addressLabel.leadingAnchor),
-            descriptionLabelName.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 40),
+            descriptionLabelName.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 25),
             
             descriptionLabel.leadingAnchor.constraint(equalTo: descriptionLabelName.leadingAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: descriptionLabelName.bottomAnchor, constant: 20),
+            descriptionLabel.topAnchor.constraint(equalTo: descriptionLabelName.bottomAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -15),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -150)
+            
+            idlabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 20),
+            idlabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
+            
+            dateLabel.leadingAnchor.constraint(equalTo: idlabel.leadingAnchor),
+            dateLabel.topAnchor.constraint(equalTo: idlabel.bottomAnchor),
+            dateLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -20),
         ])
+        
+        telephoneButton.addTarget(controller, action: #selector(telephoneButtonTapped), for: .touchUpInside)
+        emailButton.addTarget(controller, action: #selector(emailButtonTapped), for: .touchUpInside)
+        
     }
 
-    func setupDatailedproductView(image: String, price: String, title: String,  location: String, address: String, description: String, email: String, number: String){
+    func setupDatailedproductView(controller: UIViewController,image: String, price: String, title: String,  location: String, address: String, description: String, email: String, number: String, id: String, date: String){
         if let imageURL = URL(string: image) {
             imageView.sd_setImage(with: imageURL, completed: nil)
         }
@@ -197,6 +226,9 @@ class DetailedProductView: UIView {
         descriptionLabel.text = description
         self.email = email
         self.number = number
+        self.controller = controller
+        idlabel.text = "Объявление №\(id)"
+        dateLabel.text = date
     }
     
     @objc private func telephoneButtonTapped() {

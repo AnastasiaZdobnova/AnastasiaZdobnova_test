@@ -32,7 +32,7 @@ class SecondViewController: UIViewController {
         print("Переданный id = \(id)")
         setupUI()
         fetchProductData()
-        // Do any additional setup after loading the view.
+        setupNavigationBar()
     }
     
     private func setupUI() {
@@ -42,6 +42,7 @@ class SecondViewController: UIViewController {
         label.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: 50)
         view.addSubview(label)
         detailedView.translatesAutoresizingMaskIntoConstraints = false
+        detailedView.controller = self
         view.addSubview(detailedView)
         
         NSLayoutConstraint.activate([
@@ -84,7 +85,7 @@ class SecondViewController: UIViewController {
                         self.state = .success
                         print(self.productData ?? "oops")
                         if let product = self.productData{
-                            self.detailedView.setupDatailedproductView(image: product.imageURL, price: product.price, title: product.title, location: product.location, address: product.address, description: product.description, email: product.email, number: product.phoneNumber)
+                            self.detailedView.setupDatailedproductView(controller: self, image: product.imageURL, price: product.price, title: product.title, location: product.location, address: product.address, description: product.description, email: product.email, number: product.phoneNumber, id: product.id, date: product.createdDate)
                         }
                         print("lalalla\(self.productData?.imageURL ?? "")")
                         self.detailedView.setNeedsLayout()
@@ -95,5 +96,15 @@ class SecondViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func setupNavigationBar() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
+        backButton.tintColor = .black
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
