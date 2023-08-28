@@ -48,7 +48,7 @@ class SecondViewController: UIViewController {
             detailedView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             detailedView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             detailedView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            detailedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            detailedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
@@ -84,7 +84,7 @@ class SecondViewController: UIViewController {
                         self.state = .success
                         print(self.productData ?? "oops")
                         if let product = self.productData{
-                            self.detailedView.setupSell(image: product.imageURL, price: product.price, title: product.title, location: product.location, address: product.address, description: product.description)
+                            self.detailedView.setupDatailedproductView(image: product.imageURL, price: product.price, title: product.title, location: product.location, address: product.address, description: product.description, email: product.email, number: product.phoneNumber)
                         }
                         print("lalalla\(self.productData?.imageURL ?? "")")
                         self.detailedView.setNeedsLayout()

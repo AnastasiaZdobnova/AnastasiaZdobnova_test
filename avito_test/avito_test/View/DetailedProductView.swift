@@ -10,6 +10,16 @@ import SDWebImage
 
 class DetailedProductView: UIView {
     
+    var email = ""
+    var number = ""
+    
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.bounces = true
+        return scrollView
+    }()
+    
     let contentWhiteView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -42,6 +52,39 @@ class DetailedProductView: UIView {
         label.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         label.numberOfLines = 2
         return label
+    }()
+    
+    let telephoneButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Позвонить", for: .normal)
+        button.addTarget(self, action: #selector(telephoneButtonTapped), for: .touchUpInside)
+        button.backgroundColor = UIColor(
+            red: CGFloat(0x39) / 255.0,
+            green: CGFloat(0xC7) / 255.0,
+            blue: CGFloat(0x58) / 255.0,
+            alpha: 1.0)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 12
+        return button
+    }()
+    
+    let emailButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Написать", for: .normal)
+        button.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
+        button.backgroundColor = UIColor(
+            red: CGFloat(0x17) / 255.0,
+            green: CGFloat(0x8F) / 255.0,
+            blue: CGFloat(0xE7) / 255.0,
+            alpha: 1.0
+        )
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 12
+        return button
     }()
     
     let locationLabel: UILabel = {
@@ -77,24 +120,17 @@ class DetailedProductView: UIView {
         label.numberOfLines = 0
         return label
     }()
-    
-    let phoneNumberLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        
-        label.numberOfLines = 0
-        return label
-    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(contentWhiteView)
+        addSubview(scrollView)
+        scrollView.addSubview(contentWhiteView)
         contentWhiteView.addSubview(imageView)
         contentWhiteView.addSubview(priceLabel)
         contentWhiteView.addSubview(titleLabel)
+        contentWhiteView.addSubview(telephoneButton)
+        contentWhiteView.addSubview(emailButton)
         contentWhiteView.addSubview(locationLabel)
         contentWhiteView.addSubview(addressLabel)
         contentWhiteView.addSubview(descriptionLabelName)
@@ -102,14 +138,20 @@ class DetailedProductView: UIView {
         
         NSLayoutConstraint.activate([
             
-            contentWhiteView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentWhiteView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentWhiteView.topAnchor.constraint(equalTo: topAnchor),
-            contentWhiteView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            contentWhiteView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentWhiteView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentWhiteView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentWhiteView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             
             imageView.topAnchor.constraint(equalTo: contentWhiteView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentWhiteView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor),
+            imageView.widthAnchor.constraint(equalToConstant:  (UIScreen.main.bounds.width)),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
             priceLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 15),
@@ -117,9 +159,19 @@ class DetailedProductView: UIView {
             
             titleLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 5),
             titleLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+            
+            telephoneButton.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            telephoneButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            telephoneButton.heightAnchor.constraint(equalToConstant: 45),
+            
+            emailButton.leadingAnchor.constraint(equalTo: telephoneButton.trailingAnchor, constant: 10),
+            emailButton.topAnchor.constraint(equalTo: telephoneButton.topAnchor),
+            emailButton.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -15),
+            emailButton.heightAnchor.constraint(equalTo: telephoneButton.heightAnchor),
+            emailButton.widthAnchor.constraint(equalTo: telephoneButton.widthAnchor),
 
-            locationLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            locationLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            locationLabel.leadingAnchor.constraint(equalTo: telephoneButton.leadingAnchor),
+            locationLabel.topAnchor.constraint(equalTo: telephoneButton.bottomAnchor, constant: 30),
             
             addressLabel.leadingAnchor.constraint(equalTo: locationLabel.leadingAnchor),
             addressLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor),
@@ -129,15 +181,12 @@ class DetailedProductView: UIView {
             
             descriptionLabel.leadingAnchor.constraint(equalTo: descriptionLabelName.leadingAnchor),
             descriptionLabel.topAnchor.constraint(equalTo: descriptionLabelName.bottomAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -15)
-//
-//            dateLabel.leadingAnchor.constraint(equalTo: locationLabel.leadingAnchor),
-//            dateLabel.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 4)
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -15),
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -150)
         ])
     }
-    
-//    func setupSell(title: String, image: String, price: String, location: String, date: String){
-    func setupSell(image: String, price: String, title: String,  location: String, address: String, description: String){
+
+    func setupDatailedproductView(image: String, price: String, title: String,  location: String, address: String, description: String, email: String, number: String){
         if let imageURL = URL(string: image) {
             imageView.sd_setImage(with: imageURL, completed: nil)
         }
@@ -146,7 +195,23 @@ class DetailedProductView: UIView {
         locationLabel.text = location
         addressLabel.text = address
         descriptionLabel.text = description
-//        dateLabel.text = date
+        self.email = email
+        self.number = number
+    }
+    
+    @objc private func telephoneButtonTapped() {
+        let cleanedPhoneNumber = self.number.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+        print("cleanedPhoneNumber \(cleanedPhoneNumber)")
+        if let url = URL(string: "tel://+\(cleanedPhoneNumber)") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    @objc private func emailButtonTapped() {
+        print(self.email)
+        if let url = URL(string: "mailto:\(self.email)") {
+            UIApplication.shared.open(url)
+        }
     }
     
     required init?(coder: NSCoder) {

@@ -35,6 +35,12 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         setupUI()
         fetchProductData()
+//        let phoneNumber =  "+7 (747) 277-6804"
+//        let cleanedPhoneNumber = phoneNumber.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+//        
+//        if let url = URL(string: "tel://+\(cleanedPhoneNumber)") {
+//            UIApplication.shared.open(url)
+//        }
     }
     
     private func setupUI() {
