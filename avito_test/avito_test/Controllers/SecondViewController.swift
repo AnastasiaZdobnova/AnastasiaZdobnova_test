@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import CoreLocation
+import MapKit
 
 class SecondViewController: UIViewController {
     
@@ -59,16 +61,17 @@ class SecondViewController: UIViewController {
         fetchProductData()
         setupNavigationBar()
     }
+    
     //MARK: - setupUI()
     private func setupUI() {
-        view.addSubview(activityIndicator)
-        view.addSubview(errorLabel)
-        view.addSubview(retryButton)
-    
+        
         retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         detailedView.translatesAutoresizingMaskIntoConstraints = false
         detailedView.controller = self
         view.addSubview(detailedView)
+        view.addSubview(activityIndicator)
+        view.addSubview(errorLabel)
+        view.addSubview(retryButton)
         
         NSLayoutConstraint.activate([
             detailedView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -124,12 +127,13 @@ class SecondViewController: UIViewController {
                     case .success(let detailedData):
                         self.productData = detailedData
                         self.state = .success
-                        print(self.productData ?? "oops")
                         if let product = self.productData{
                             self.detailedView.setupDatailedproductView(controller: self, image: product.imageURL, price: product.price, title: product.title, location: product.location, address: product.address, description: product.description, email: product.email, number: product.phoneNumber, id: product.id, date: product.createdDate)
                         }
                         self.detailedView.setNeedsLayout()
                         self.detailedView.layoutIfNeeded()
+                        self.detailedView.telephoneButton.addTarget(self, action: #selector(self.telephoneButtonTapped), for: .touchUpInside)
+                        self.detailedView.emailButton.addTarget(self, action: #selector(self.emailButtonTapped), for: .touchUpInside)
                     case .failure(let error):
                         self.state = .error(error)
                     }
@@ -142,6 +146,7 @@ class SecondViewController: UIViewController {
         let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
         backButton.tintColor =  UIColor(named: "adaptiveBlack")
         navigationItem.leftBarButtonItem = backButton
+        navigationItem.title = "Информация о товаре"
     }
     
     @objc private func backButtonTapped() {
@@ -150,21 +155,39 @@ class SecondViewController: UIViewController {
     
     //MARK: - retryButtonTapped()
     @objc private func retryButtonTapped() {
-        UIView.animate(withDuration: 0.2, animations: {
-            self.retryButton.alpha = 0.5
-            self.retryButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-        }) { _ in
-            UIView.animate(withDuration: 0.2) {
-                self.retryButton.alpha = 1.0
-                self.retryButton.transform = CGAffineTransform.identity
-            }
-            
-            self.fetchProductData()
-        }
+        animateButtonPress(for: retryButton)
+        self.fetchProductData()
     }
     
     private func vibrateDevice() {
         let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.error) // Вибрация об ошибке
+        generator.notificationOccurred(.error)
+    }
+    
+    @objc private func telephoneButtonTapped() {
+        animateButtonPress(for: detailedView.telephoneButton)
+        let cleanedPhoneNumber = detailedView.number.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+        if let url = URL(string: "tel://+\(cleanedPhoneNumber)") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    @objc private func emailButtonTapped() {
+        animateButtonPress(for: detailedView.emailButton)
+        if let url = URL(string: "mailto:\(detailedView.email)") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    private func animateButtonPress(for button: UIButton) {
+        UIView.animate(withDuration: 0.2, animations: {
+            button.alpha = 0.5
+            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                button.alpha = 1.0
+                button.transform = CGAffineTransform.identity
+            }
+        }
     }
 }

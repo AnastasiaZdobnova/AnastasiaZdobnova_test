@@ -54,12 +54,13 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        //navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        navigationItem.title = "Avito_test"
         setupUI()
         fetchProductData()
     }
@@ -79,7 +80,7 @@ class ViewController: UIViewController {
         view.addSubview(activityIndicator)
         view.addSubview(errorLabel)
         view.addSubview(retryButton)
-    
+        
         retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -122,7 +123,7 @@ class ViewController: UIViewController {
                 self.collectionView.isHidden = true
                 self.errorLabel.isHidden = false
                 self.retryButton.isHidden = false
-                self.vibrateDevice() // Вызов метода для вибрации
+                self.vibrateDevice()
             }
         }
     }
@@ -148,7 +149,7 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    
     //MARK: - retryButtonTapped()
     @objc private func retryButtonTapped() {
         UIView.animate(withDuration: 0.2, animations: {
@@ -159,14 +160,13 @@ class ViewController: UIViewController {
                 self.retryButton.alpha = 1.0
                 self.retryButton.transform = CGAffineTransform.identity
             }
-            
             self.fetchProductData()
         }
     }
     
     private func vibrateDevice() {
         let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.error) // Вибрация об ошибке
+        generator.notificationOccurred(.error)
     }
 }
 
@@ -180,11 +180,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ProductCell
         
-        // Configure the cell using the data from productData
         if let product = productData?.advertisements[indexPath.item] {
             cell.setupSell(title: product.title, image: product.imageURL, price: product.price, location: product.location, date: product.createdDate)
         }
-        
         return cell
     }
     
@@ -195,10 +193,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if let product = productData?.advertisements[indexPath.item] {
-            let secondViewController = SecondViewController() // Создание экземпляра второго контроллера
+            let secondViewController = SecondViewController()
             secondViewController.id = product.id
-            navigationController?.pushViewController(secondViewController, animated: true) // Переход на второй контроллер
-            
+            navigationController?.pushViewController(secondViewController, animated: true)
         }
     }
 }

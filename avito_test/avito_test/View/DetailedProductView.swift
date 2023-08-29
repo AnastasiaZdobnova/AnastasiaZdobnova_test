@@ -132,7 +132,7 @@ class DetailedProductView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -167,7 +167,7 @@ class DetailedProductView: UIView {
             imageView.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor),
             imageView.widthAnchor.constraint(equalToConstant:  (UIScreen.main.bounds.width)),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
-
+            
             priceLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 15),
             priceLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 15),
             
@@ -183,7 +183,7 @@ class DetailedProductView: UIView {
             emailButton.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -15),
             emailButton.heightAnchor.constraint(equalTo: telephoneButton.heightAnchor),
             emailButton.widthAnchor.constraint(equalTo: telephoneButton.widthAnchor),
-
+            
             locationLabel.leadingAnchor.constraint(equalTo: telephoneButton.leadingAnchor),
             locationLabel.topAnchor.constraint(equalTo: telephoneButton.bottomAnchor, constant: 30),
             
@@ -204,12 +204,8 @@ class DetailedProductView: UIView {
             dateLabel.topAnchor.constraint(equalTo: idlabel.bottomAnchor),
             dateLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -20),
         ])
-        
-        telephoneButton.addTarget(controller, action: #selector(telephoneButtonTapped), for: .touchUpInside)
-        emailButton.addTarget(controller, action: #selector(emailButtonTapped), for: .touchUpInside)
-        
     }
-
+    
     func setupDatailedproductView(controller: UIViewController,image: String, price: String, title: String,  location: String, address: String, description: String, email: String, number: String, id: String, date: String){
         if let imageURL = URL(string: image) {
             imageView.sd_setImage(with: imageURL, completed: nil)
@@ -224,33 +220,6 @@ class DetailedProductView: UIView {
         self.controller = controller
         idlabel.text = "Объявление №\(id)"
         dateLabel.text = date
-    }
-    
-    @objc private func telephoneButtonTapped() {
-        animateButtonPress(for: telephoneButton)
-        let cleanedPhoneNumber = self.number.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-        if let url = URL(string: "tel://+\(cleanedPhoneNumber)") {
-            UIApplication.shared.open(url)
-        }
-    }
-    
-    @objc private func emailButtonTapped() {
-        animateButtonPress(for: emailButton)
-        if let url = URL(string: "mailto:\(self.email)") {
-            UIApplication.shared.open(url)
-        }
-    }
-    
-    private func animateButtonPress(for button: UIButton) {
-        UIView.animate(withDuration: 0.2, animations: {
-            button.alpha = 0.5
-            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-        }) { _ in
-            UIView.animate(withDuration: 0.2) {
-                button.alpha = 1.0
-                button.transform = CGAffineTransform.identity
-            }
-        }
     }
     
     required init?(coder: NSCoder) {
