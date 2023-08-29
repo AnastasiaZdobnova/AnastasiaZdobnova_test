@@ -46,7 +46,7 @@ class ViewController: UIViewController {
         return button
     }()
     
-    var state: ViewState = .loading {
+    private var state: ViewState = .loading {
         didSet {
             updateUI()
         }
@@ -61,28 +61,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupUI()
-        checkInternetConnection()
+        fetchProductData()
     }
     
+    //MARK: - setupUI
     private func setupUI() {
-        
-        view.addSubview(activityIndicator)
-        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        view.addSubview(errorLabel)
-        view.addSubview(retryButton)
-        
-        NSLayoutConstraint.activate([
-            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
-            retryButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 10),
-            retryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
-        
-        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
-        
         let layout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
@@ -91,16 +74,33 @@ class ViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsVerticalScrollIndicator = false
+        
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
+        view.addSubview(errorLabel)
+        view.addSubview(retryButton)
+    
+        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            retryButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 10),
+            retryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            
         ])
     }
     
+    //MARK: - updateUI()
     private func updateUI() {
         DispatchQueue.main.async {
             switch self.state {
@@ -127,7 +127,8 @@ class ViewController: UIViewController {
         }
     }
     
-    func fetchProductData() {
+    //MARK: - fetchProductData()
+    private func fetchProductData() {
         state = .loading
         
         guard let url = URL(string: "https://www.avito.st/s/interns-ios/main-page.json") else {
@@ -148,20 +149,8 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    func checkInternetConnection() {
-        let reachability = NetworkReachabilityManager()
-        reachability?.startListening { status in
-            if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
-                self.fetchProductData()
-            } else {
-                DispatchQueue.main.async {
-                    self.state = .error(NSError(domain: "NoInternet", code: 0, userInfo: nil))
-                }
-            }
-        }
-    }
-    
+
+    //MARK: - retryButtonTapped()
     @objc private func retryButtonTapped() {
         UIView.animate(withDuration: 0.2, animations: {
             self.retryButton.alpha = 0.5
@@ -172,8 +161,7 @@ class ViewController: UIViewController {
                 self.retryButton.transform = CGAffineTransform.identity
             }
             
-            self.setupUI()
-            self.checkInternetConnection()
+            self.fetchProductData()
         }
     }
     
@@ -183,6 +171,7 @@ class ViewController: UIViewController {
        }
 }
 
+//MARK: - extension UICollectionView
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -213,6 +202,5 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
             navigationController?.pushViewController(secondViewController, animated: true) // Переход на второй контроллер
             
         }
-        
     }
 }
