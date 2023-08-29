@@ -166,9 +166,9 @@ class ViewController: UIViewController {
     }
     
     private func vibrateDevice() {
-           let generator = UINotificationFeedbackGenerator()
-           generator.notificationOccurred(.error) // Вибрация об ошибке
-       }
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error) // Вибрация об ошибке
+    }
 }
 
 //MARK: - extension UICollectionView

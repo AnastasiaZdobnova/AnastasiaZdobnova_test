@@ -12,10 +12,36 @@ class SecondViewController: UIViewController {
     var id = ""
     let apiManager = APIManager()
     var productData: DetailedData?
-    let label = UILabel()
     var detailedView = DetailedProductView()
     
-    var state: ViewState = .loading {
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Проблемы с подключением"
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
+    private let retryButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Повторить", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        button.isHidden = true
+        return button
+    }()
+    
+    private var state: ViewState = .loading {
         didSet {
             updateUI()
         }
@@ -29,18 +55,17 @@ class SecondViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        print("Переданный id = \(id)")
         setupUI()
         fetchProductData()
         setupNavigationBar()
     }
     
     private func setupUI() {
-        label.textAlignment = .center
-        label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: 50)
-        view.addSubview(label)
+        view.addSubview(activityIndicator)
+        view.addSubview(errorLabel)
+        view.addSubview(retryButton)
+    
+        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         detailedView.translatesAutoresizingMaskIntoConstraints = false
         detailedView.controller = self
         view.addSubview(detailedView)
@@ -50,6 +75,15 @@ class SecondViewController: UIViewController {
             detailedView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             detailedView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             detailedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            retryButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 10),
+            retryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
@@ -57,14 +91,21 @@ class SecondViewController: UIViewController {
         DispatchQueue.main.async {
             switch self.state {
             case .loading:
-                self.label.text = "loading"
+                self.activityIndicator.startAnimating()
+                self.errorLabel.isHidden = true
+                self.retryButton.isHidden = true
                 self.detailedView.isHidden = true
             case .success:
-                self.label.isHidden = true
+                self.activityIndicator.stopAnimating()
+                self.errorLabel.isHidden = true
+                self.retryButton.isHidden = true
                 self.detailedView.isHidden = false
                 
-            case .error(let error):
-                self.label.text = ("Error: \(error)")
+            case .error(_):
+                self.activityIndicator.stopAnimating()
+                self.errorLabel.isHidden = false
+                self.retryButton.isHidden = false
+                self.vibrateDevice() // Вызов метода для вибрации
                 self.detailedView.isHidden = true
             }
         }
@@ -106,5 +147,25 @@ class SecondViewController: UIViewController {
     
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    //MARK: - retryButtonTapped()
+    @objc private func retryButtonTapped() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.retryButton.alpha = 0.5
+            self.retryButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.retryButton.alpha = 1.0
+                self.retryButton.transform = CGAffineTransform.identity
+            }
+            
+            self.fetchProductData()
+        }
+    }
+    
+    private func vibrateDevice() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error) // Вибрация об ошибке
     }
 }
