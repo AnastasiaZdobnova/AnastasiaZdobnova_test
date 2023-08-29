@@ -118,8 +118,8 @@ class ProductCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        titleLabel.text = ""
         priceLabel.text = ""
+        titleLabel.text = ""
         locationLabel.text = ""
         dateLabel.text = ""
     }
