@@ -35,7 +35,7 @@ class SecondViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Повторить", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.isHidden = true
         return button
@@ -54,7 +54,7 @@ class SecondViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupUI()
         fetchProductData()
         setupNavigationBar()
@@ -112,7 +112,6 @@ class SecondViewController: UIViewController {
     }
     func fetchProductData() {
         state = .loading
-        // label.text = "loading"
         
         guard let url = URL(string: "https://www.avito.st/s/interns-ios/details/"+id+".json") else {
             return
@@ -128,7 +127,6 @@ class SecondViewController: UIViewController {
                         if let product = self.productData{
                             self.detailedView.setupDatailedproductView(controller: self, image: product.imageURL, price: product.price, title: product.title, location: product.location, address: product.address, description: product.description, email: product.email, number: product.phoneNumber, id: product.id, date: product.createdDate)
                         }
-                        print("lalalla\(self.productData?.imageURL ?? "")")
                         self.detailedView.setNeedsLayout()
                         self.detailedView.layoutIfNeeded()
                     case .failure(let error):
@@ -141,7 +139,7 @@ class SecondViewController: UIViewController {
     
     private func setupNavigationBar() {
         let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
-        backButton.tintColor = .black
+        backButton.tintColor =  UIColor(named: "adaptiveBlack")
         navigationItem.leftBarButtonItem = backButton
     }
     

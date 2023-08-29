@@ -24,7 +24,7 @@ class DetailedProductView: UIView {
     
     let contentWhiteView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -41,7 +41,7 @@ class DetailedProductView: UIView {
     let priceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = UIColor(named: "adaptiveBlack")
         label.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
         return label
     }()
@@ -49,7 +49,7 @@ class DetailedProductView: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = UIColor(named: "adaptiveBlack")
         label.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         label.numberOfLines = 2
         return label
@@ -73,12 +73,7 @@ class DetailedProductView: UIView {
     let emailButton: UIButton = {
         let button = UIButton()
         button.setTitle("Написать", for: .normal)
-        button.backgroundColor = UIColor(
-            red: CGFloat(0x17) / 255.0,
-            green: CGFloat(0x8F) / 255.0,
-            blue: CGFloat(0xE7) / 255.0,
-            alpha: 1.0
-        )
+        button.backgroundColor = UIColor(named: "AccentColor")
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
         button.setTitleColor(UIColor.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +84,7 @@ class DetailedProductView: UIView {
     let locationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = UIColor(named: "adaptiveBlack")
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         return label
     }()
@@ -97,7 +92,7 @@ class DetailedProductView: UIView {
     let addressLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = UIColor(named: "adaptiveBlack")
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         return label
     }()
@@ -105,7 +100,7 @@ class DetailedProductView: UIView {
     let descriptionLabelName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = UIColor(named: "adaptiveBlack")
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.text = "Описание"
         return label
@@ -114,7 +109,7 @@ class DetailedProductView: UIView {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = UIColor(named: "adaptiveBlack")
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.numberOfLines = 0
         return label

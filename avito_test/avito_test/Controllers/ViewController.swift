@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Повторить", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.isHidden = true
         return button
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupUI()
         fetchProductData()
     }
@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(ProductCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsVerticalScrollIndicator = false
         
@@ -141,7 +141,6 @@ class ViewController: UIViewController {
                     case .success(let productData):
                         self.productData = productData
                         self.state = .success
-                        print(productData)
                     case .failure(let error):
                         self.state = .error(error)
                     }
@@ -196,7 +195,6 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if let product = productData?.advertisements[indexPath.item] {
-            print("Selected cell at id: \(product.id)")
             let secondViewController = SecondViewController() // Создание экземпляра второго контроллера
             secondViewController.id = product.id
             navigationController?.pushViewController(secondViewController, animated: true) // Переход на второй контроллер
