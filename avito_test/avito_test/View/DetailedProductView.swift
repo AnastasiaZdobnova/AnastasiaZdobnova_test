@@ -227,17 +227,29 @@ class DetailedProductView: UIView {
     }
     
     @objc private func telephoneButtonTapped() {
+        animateButtonPress(for: telephoneButton)
         let cleanedPhoneNumber = self.number.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-        print("cleanedPhoneNumber \(cleanedPhoneNumber)")
         if let url = URL(string: "tel://+\(cleanedPhoneNumber)") {
             UIApplication.shared.open(url)
         }
     }
     
     @objc private func emailButtonTapped() {
-        print(self.email)
+        animateButtonPress(for: emailButton)
         if let url = URL(string: "mailto:\(self.email)") {
             UIApplication.shared.open(url)
+        }
+    }
+    
+    private func animateButtonPress(for button: UIButton) {
+        UIView.animate(withDuration: 0.2, animations: {
+            button.alpha = 0.5
+            button.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                button.alpha = 1.0
+                button.transform = CGAffineTransform.identity
+            }
         }
     }
     

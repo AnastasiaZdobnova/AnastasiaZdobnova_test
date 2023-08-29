@@ -59,7 +59,7 @@ class SecondViewController: UIViewController {
         fetchProductData()
         setupNavigationBar()
     }
-    
+    //MARK: - setupUI()
     private func setupUI() {
         view.addSubview(activityIndicator)
         view.addSubview(errorLabel)
@@ -86,7 +86,7 @@ class SecondViewController: UIViewController {
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-    
+    //MARK: - updateUI()
     private func updateUI() {
         DispatchQueue.main.async {
             switch self.state {
@@ -110,6 +110,7 @@ class SecondViewController: UIViewController {
             }
         }
     }
+    //MARK: - fetchProductData()
     func fetchProductData() {
         state = .loading
         
@@ -136,7 +137,7 @@ class SecondViewController: UIViewController {
             }
         }
     }
-    
+    //MARK: - setupNavigationBar()
     private func setupNavigationBar() {
         let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
         backButton.tintColor =  UIColor(named: "adaptiveBlack")
