@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 enum ViewState {
     case loading
@@ -16,10 +17,36 @@ enum ViewState {
 class ViewController: UIViewController {
     let apiManager = APIManager()
     var productData: ProductData?
-    let label = UILabel()
     var collectionView: UICollectionView!
     
-    var state: ViewState = .loading {
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Проблемы с подключением"
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
+    private let retryButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Повторить", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        button.isHidden = true
+        return button
+    }()
+    
+    private var state: ViewState = .loading {
         didSet {
             updateUI()
         }
@@ -29,7 +56,7 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -37,14 +64,8 @@ class ViewController: UIViewController {
         fetchProductData()
     }
     
+    //MARK: - setupUI
     private func setupUI() {
-
-        label.textAlignment = .center
-        label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.frame = CGRect(x: 0, y: 100, width: view.frame.width, height: 50)
-        view.addSubview(label)
-        
         let layout = UICollectionViewFlowLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
@@ -53,40 +74,62 @@ class ViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsVerticalScrollIndicator = false
+        
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
+        view.addSubview(errorLabel)
+        view.addSubview(retryButton)
+    
+        retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            retryButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 10),
+            retryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            
         ])
     }
     
+    //MARK: - updateUI()
     private func updateUI() {
         DispatchQueue.main.async {
             switch self.state {
             case .loading:
-                self.label.text = "loading"
-                // Hide or show relevant UI elements for loading state
+                self.activityIndicator.startAnimating()
                 self.collectionView.isHidden = true
+                self.errorLabel.isHidden = true
+                self.retryButton.isHidden = true
             case .success:
-                self.label.isHidden = true
-                // Update your UI to display collectionView with data
+                self.activityIndicator.stopAnimating()
+                self.collectionView.reloadData()
                 self.collectionView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
                 self.collectionView.reloadData()
                 self.collectionView.isHidden = false
-            case .error(let error):
-                self.label.text = ("Error: \(error)")
-                // Show error message or handle error state
+                self.errorLabel.isHidden = true
+                self.retryButton.isHidden = true
+            case .error(_):
+                self.activityIndicator.stopAnimating()
                 self.collectionView.isHidden = true
+                self.errorLabel.isHidden = false
+                self.retryButton.isHidden = false
+                self.vibrateDevice() // Вызов метода для вибрации
             }
         }
     }
     
-    func fetchProductData() {
+    //MARK: - fetchProductData()
+    private func fetchProductData() {
         state = .loading
-        label.text = "loading"
         
         guard let url = URL(string: "https://www.avito.st/s/interns-ios/main-page.json") else {
             return
@@ -106,8 +149,29 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    //MARK: - retryButtonTapped()
+    @objc private func retryButtonTapped() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.retryButton.alpha = 0.5
+            self.retryButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.retryButton.alpha = 1.0
+                self.retryButton.transform = CGAffineTransform.identity
+            }
+            
+            self.fetchProductData()
+        }
+    }
+    
+    private func vibrateDevice() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.error) // Вибрация об ошибке
+    }
 }
 
+//MARK: - extension UICollectionView
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -135,9 +199,8 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
             print("Selected cell at id: \(product.id)")
             let secondViewController = SecondViewController() // Создание экземпляра второго контроллера
             secondViewController.id = product.id
-                navigationController?.pushViewController(secondViewController, animated: true) // Переход на второй контроллер
+            navigationController?.pushViewController(secondViewController, animated: true) // Переход на второй контроллер
             
         }
-        
     }
 }

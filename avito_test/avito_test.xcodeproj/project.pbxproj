@@ -21,6 +21,7 @@
 		54C46DCE2A9B31E900BF8B28 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 54C46DCD2A9B31E900BF8B28 /* SDWebImageMapKit */; };
 		54C46DD02A9B81DA00BF8B28 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C46DCF2A9B81DA00BF8B28 /* SecondViewController.swift */; };
 		54C46DD42A9B905800BF8B28 /* DetailedProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C46DD32A9B905800BF8B28 /* DetailedProductView.swift */; };
+		54C46DDA2A9CE18B00BF8B28 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 54C46DD92A9CE18B00BF8B28 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54C46DDA2A9CE18B00BF8B28 /* Alamofire in Frameworks */,
 				54C46DCE2A9B31E900BF8B28 /* SDWebImageMapKit in Frameworks */,
 				54C46DCC2A9B31E900BF8B28 /* SDWebImage in Frameworks */,
 			);
@@ -140,6 +142,7 @@
 			packageProductDependencies = (
 				54C46DCB2A9B31E900BF8B28 /* SDWebImage */,
 				54C46DCD2A9B31E900BF8B28 /* SDWebImageMapKit */,
+				54C46DD92A9CE18B00BF8B28 /* Alamofire */,
 			);
 			productName = avito_test;
 			productReference = 5401CB482A98A56C002D4A3A /* avito_test.app */;
@@ -171,6 +174,7 @@
 			mainGroup = 5401CB3F2A98A56C002D4A3A;
 			packageReferences = (
 				54C46DCA2A9B31E900BF8B28 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				54C46DD82A9CE18B00BF8B28 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 5401CB492A98A56C002D4A3A /* Products */;
 			projectDirPath = "";
@@ -432,6 +436,14 @@
 				minimumVersion = 5.17.0;
 			};
 		};
+		54C46DD82A9CE18B00BF8B28 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -444,6 +456,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 54C46DCA2A9B31E900BF8B28 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
+		};
+		54C46DD92A9CE18B00BF8B28 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54C46DD82A9CE18B00BF8B28 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

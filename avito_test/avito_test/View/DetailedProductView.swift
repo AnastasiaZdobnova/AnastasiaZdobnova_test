@@ -10,7 +10,7 @@ import SDWebImage
 
 class DetailedProductView: UIView {
     
-    var controller = UIViewController()
+    weak var controller : UIViewController?
     var email = ""
     var number = ""
     
