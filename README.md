@@ -21,9 +21,11 @@ SPM: Alamofire, SDWebImage
 #### Экран загрузки 
 <img src="img/download_light.PNG" alt="Экран загрузки" width="300" height="600"> | <img src="img/download_dark.PNG" alt="Экран загрузки" width="300" height="600">
 #### Первый экран
-<img src="img/1_light.PNG" alt="Экран загрузки" width="300" height="600"> | <img src="img/1_dark.PNG" alt="Экран загрузки" width="300" height="600">
+<img src="img/1_light.PNG" alt="Первый экран" width="300" height="600"> | <img src="img/1_dark.PNG" alt="Первый экран" width="300" height="600">
 #### Второй экран
-<img src="img/2_light.PNG" alt="Экран загрузки" width="300" height="600"> | <img src="img/2_dark.PNG" alt="Экран загрузки" width="300" height="600">
+<img src="img/2_light.PNG" alt="Второй экран" width="300" height="600"> | <img src="img/2_dark.PNG" alt="Второй экран" width="300" height="600">
+#### Экран ошибки
+<img src="img/error_light.PNG" alt="Экран ошибки" width="300" height="600"> | <img src="img/error_dark.PNG" alt="Экран ошибки" width="300" height="600">
 ## Демонстрация работы приложения: 
 https://drive.google.com/drive/folders/1EaI11hdJmsq_TeVB2WZ7kFP0ClzJDpln?usp=sharing
 ## Инструкция по запуску проекта
